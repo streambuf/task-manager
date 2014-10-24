@@ -1,0 +1,60 @@
+{% extends 'main.html' %}
+{% load staticfiles %}
+
+{% block head %} 
+  {{ form.media }} 
+{% endblock %}
+
+{% block tasks %}
+<form class="jumbotron"  action="" method="POST">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-5">
+      {{form.title}}
+      <div class="error-title item-danger"></div>
+    </div>
+    <div class="col-md-6">
+      {{form.expiration_date}}
+      <div class="error-edate item-danger"></div>
+    </div>
+    <div class="col-md-1">
+      <button type="submit" class="btn btn-success">Add</button>
+    </div>
+  </div>
+</form>
+<ul class="list-group">
+  {% for task in tasks %}
+    {% if task.is_completed == 1 and task.is_expired == 1%}
+    <li class="list-group-item row item-success item-danger">
+    {% elif task.is_completed == 1 %}
+    <li class="list-group-item row item-success">
+    {% elif task.is_expired == 1 %}
+    <li class="list-group-item row item-danger">
+    {% else %}
+    <li class="list-group-item row">
+    {% endif %}
+      <div class="col-lg-1 list-group__checkbox">
+        <input {% if task.is_completed == 1 %} checked="checked" {%endif%} type="checkbox" 
+        data-tid = "{{ task.id }}">
+      </div>
+      <div class="col-lg-6">
+        {% if task.is_completed == 0 %}
+        <p class="task-title">
+        {% else %}
+        <p class="task-title line-through">
+        {% endif %} 
+          {{task.title}}
+        </p>
+      </div>
+      <div class="col-lg-4"> 
+        <p>{{task.expiration_date}}</p>
+      </div>
+      <div class="col-lg-1">   
+        <button class="btn btn-small btn-danger delete-task" data-tid = "{{ task.id }}">
+          <i class="icon-remove icon-white">X</i>
+        </button>
+      </div> 
+    </li>
+  {% endfor %}  
+</ul>
+{% endblock %} 
