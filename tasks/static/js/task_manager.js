@@ -85,12 +85,17 @@ $(document).ready(function() {
 	$(document).on('addTask', addTask);
 
 	function showErrors(data) {
+		var TIME_SHOW_ERROR = 3000;
 		if (data.title) {
-			$('.error-title').html(data.title).slideDown().delay(3000).slideUp();
+			showAnimateError('.error-title', data.title, TIME_SHOW_ERROR);
 		}
 		if (data.expiration_date) {
-			$('.error-edate').html(data.expiration_date).slideDown().delay(3000).slideUp();
+			showAnimateError('.error-edate', data.expiration_date, TIME_SHOW_ERROR);
 		}
+	}
+
+	function showAnimateError(div, message, TIME_SHOW_ERROR) {
+		$(div).html(message).slideDown().delay(TIME_SHOW_ERROR).slideUp();
 	}
 
 	function addTask(e) {
